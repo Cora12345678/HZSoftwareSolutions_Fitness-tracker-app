@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitPulse — 3D Fitness Tracker</title>
+  <meta name="description"
+    content="FitPulse - A premium 3D fitness tracking app with real-time health metrics, workout tracking, and beautiful visualizations.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- ==================== SIGN-IN SCREEN ==================== -->
+    <div id="screen-login" class="screen active">
+      <div class="login-container">
+        <div class="login-header">
+          <div class="login-logo">💪</div>
+          <h1>Welcome to FitPulse</h1>
+          <p>Your premium 3D fitness journey starts here</p>
+        </div>
+        <div class="login-form">
+          <div class="form-group">
+            <label for="login-name">Full Name</label>
+            <input type="text" id="login-name" class="setting-input" placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label for="login-age">Age</label>
+            <input type="number" id="login-age" class="setting-input" placeholder="Enter your age">
+          </div>
+          <button class="primary-btn" id="btn-login">Get Started →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== LOADING SCREEN ==================== -->
+    <div id="screen-loading" class="screen">
+      <div class="loading-content">
+        <div class="loading-logo-main">💪</div>
+        <div class="loading-text" id="loading-msg">Personalizing your experience...</div>
+        <div class="loading-progress-container">
+          <div class="loading-progress-bar">
+            <div class="loading-progress-fill" id="loading-fill"></div>
+          </div>
+          <div class="loading-percent" id="loading-pct">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== DASHBOARD SCREEN ==================== -->
+    <div id="screen-home" class="screen">
+      <div class="header">
+        <div class="header-left">
+          <div class="profile-avatar" id="header-avatar-btn">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=FitUser&backgroundColor=b6e3f4" alt="Profile">
+          </div>
+          <div class="greeting">
+            <h2 id="greeting-text">Good Morning ☀️</h2>
+            <p>Ready to Move?</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" id="btn-notifications" aria-label="Notifications">
+            🔔
+            <span class="notif-badge" id="notif-badge">5</span>
+          </button>
+          <button class="icon-btn" id="btn-settings" aria-label="Settings">⚙️</button>
+        </div>
+      </div>
+
+      <!-- Daily Goal -->
+      <div class="daily-goal reveal">
+        <div class="daily-goal-header">
+          <span>🎯 Daily Goal Progress</span>
+          <span class="goal-percent" id="goal-percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" id="goal-bar" data-target="72"></div>
+        </div>
+      </div>
+
+      <!-- 3D Avatar + Floating Rings -->
+      <div class="avatar-section reveal">
+        <div class="avatar-3d">
+          <img src="" alt="Fitness Avatar" id="avatar-img">
+        </div>
+        <div class="ring-float">
+          <div class="mini-ring">
+            <svg viewBox="0 0 72 72">
+              <circle class="ring-bg" cx="36" cy="36" r="32" />
+              <circle class="ring-progress" cx="36" cy="36" r="32" stroke="url(#grad-blue)" data-percent="78" />
+            </svg>
+            <div class="ring-label">
+              <span class="ring-value" style="color: var(--neon-blue)">78%</span>
+              <span class="ring-name">Steps</span>
+            </div>
+          </div>
+        </div>
+        <div class="ring-float">
+          <div class="mini-ring">
+            <svg viewBox="0 0 72 72">
+              <circle class="ring-bg" cx="36" cy="36" r="32" />
+              <circle class="ring-progress" cx="36" cy="36" r="32" stroke="url(#grad-orange)" data-percent="62" />
+            </svg>
+            <div class="ring-label">
+              <span class="ring-value" style="color: var(--neon-orange)">62%</span>
+              <span class="ring-name">Cal</span>
+            </div>
+          </div>
+        </div>
+        <div class="ring-float">
+          <div class="mini-ring">
+            <svg viewBox="0 0 72 72">
+              <circle class="ring-bg" cx="36" cy="36" r="32" />
+              <circle class="ring-progress" cx="36" cy="36" r="32" stroke="url(#grad-pink)" data-percent="85" />
+            </svg>
+            <div class="ring-label">
+              <span class="ring-value" style="color: var(--neon-pink)">85</span>
+              <span class="ring-name">BPM</span>
+            </div>
+          </div>
+        </div>
+        <div class="ring-float">
+          <div class="mini-ring">
+            <svg viewBox="0 0 72 72">
+              <circle class="ring-bg" cx="36" cy="36" r="32" />
+              <circle class="ring-progress" cx="36" cy="36" r="32" stroke="url(#grad-purple)" data-percent="55" />
+            </svg>
+            <div class="ring-label">
+              <span class="ring-value" style="color: var(--neon-purple)">55m</span>
+              <span class="ring-name">Time</span>
+            </div>
+          </div>
+        </div>
+        <div class="ring-float">
+          <div class="mini-ring">
+            <svg viewBox="0 0 72 72">
+              <circle class="ring-bg" cx="36" cy="36" r="32" />
+              <circle class="ring-progress" cx="36" cy="36" r="32" stroke="url(#grad-green)" data-percent="70" />
+            </svg>
+            <div class="ring-label">
+              <span class="ring-value" style="color: var(--neon-green)">4.2</span>
+              <span class="ring-name">KM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SVG Gradients -->
+      <svg style="position:absolute;width:0;height:0;">
+        <defs>
+          <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00d4ff" />
+            <stop offset="100%" stop-color="#a855f7" />
+          </linearGradient>
+          <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f97316" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+          <linearGradient id="grad-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ec4899" />
+            <stop offset="100%" stop-color="#a855f7" />
+          </linearGradient>
+          <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="100%" stop-color="#6366f1" />
+          </linearGradient>
+          <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22c55e" />
+            <stop offset="100%" stop-color="#06b6d4" />
+          </linearGradient>
+          <linearGradient id="ring-grad-move" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ec4899" />
+            <stop offset="100%" stop-color="#f97316" />
+          </linearGradient>
+          <linearGradient id="ring-grad-exercise" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22c55e" />
+            <stop offset="100%" stop-color="#06b6d4" />
+          </linearGradient>
+          <linearGradient id="ring-grad-stand" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00d4ff" />
+            <stop offset="100%" stop-color="#a855f7" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid reveal">
+        <div class="stat-card steps" id="card-steps">
+          <div class="card-icon">👟</div>
+          <div class="card-value"><span class="counter" data-target="8432">0</span></div>
+          <div class="card-label">Steps Today</div>
+          <div class="card-sub"><span class="trend-up">↑ 12%</span> vs yesterday</div>
+        </div>
+        <div class="stat-card heart" id="card-heart">
+          <div class="card-icon">❤️ <span class="pulse-dot"></span></div>
+          <div class="card-value"><span class="counter" data-target="85">0</span> <small
+              style="font-size:0.7rem;font-weight:400;">bpm</small></div>
+          <div class="card-label">Heart Rate</div>
+          <div class="card-sub">Resting · Normal</div>
+        </div>
+        <div class="stat-card calories" id="card-calories">
+          <div class="card-icon"><span class="flame-icon">🔥</span></div>
+          <div class="card-value"><span class="counter" data-target="487">0</span></div>
+          <div class="card-label">Calories</div>
+          <div class="card-sub"><span class="trend-up">↑ 8%</span> on track</div>
+        </div>
+        <div class="stat-card distance" id="card-distance">
+          <div class="card-icon">📍</div>
+          <div class="card-value"><span class="counter" data-target="4">0</span>.<span class="counter"
+              data-target="2">0</span> <small style="font-size:0.7rem;font-weight:400;">km</small></div>
+          <div class="card-label">Distance</div>
+          <div class="card-sub">Goal: 6.0 km</div>
+        </div>
+      </div>
+
+      <!-- Activity Rings -->
+      <div class="activity-rings-section reveal">
+        <div class="section-title">
+          Activity Rings
+          <span class="see-all" id="btn-activity-details">Details →</span>
+        </div>
+        <div class="activity-rings-card">
+          <div class="activity-rings-visual">
+            <svg viewBox="0 0 160 160">
+              <circle class="activity-ring-bg ring-outer" cx="80" cy="80" r="65" />
+              <circle class="activity-ring-fill ring-outer" cx="80" cy="80" r="65" stroke="url(#ring-grad-move)"
+                data-percent="82" />
+              <circle class="activity-ring-bg ring-middle" cx="80" cy="80" r="54" />
+              <circle class="activity-ring-fill ring-middle" cx="80" cy="80" r="54" stroke="url(#ring-grad-exercise)"
+                data-percent="65" />
+              <circle class="activity-ring-bg ring-inner" cx="80" cy="80" r="43" />
+              <circle class="activity-ring-fill ring-inner" cx="80" cy="80" r="43" stroke="url(#ring-grad-stand)"
+                data-percent="90" />
+            </svg>
+          </div>
+          <div class="activity-rings-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--neon-pink);"></div>
+              <div class="legend-info">
+                <div class="legend-label">Move</div>
+                <div class="legend-value" style="color:var(--neon-pink);">487/600 cal</div>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--neon-green);"></div>
+              <div class="legend-info">
+                <div class="legend-label">Exercise</div>
+                <div class="legend-value" style="color:var(--neon-green);">39/60 min</div>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--neon-blue);"></div>
+              <div class="legend-info">
+                <div class="legend-label">Stand</div>
+                <div class="legend-value" style="color:var(--neon-blue);">9/10 hrs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== WORKOUTS SCREEN ==================== -->
+    <div id="screen-workouts" class="screen">
+      <div class="header">
+        <div class="header-left">
+          <div class="greeting">
+            <h2>Workouts 💪</h2>
+            <p>Choose your exercise</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:8px;">Popular Workouts</div>
+      <div class="workout-grid">
+        <div class="workout-card running" data-workout="running">
+          <div class="workout-icon">🏃</div>
+          <div class="workout-name">Running</div>
+          <div class="workout-meta">320 cal · 30 min</div>
+          <button class="workout-cta" data-workout="running">Start →</button>
+        </div>
+        <div class="workout-card cycling" data-workout="cycling">
+          <div class="workout-icon">🚴</div>
+          <div class="workout-name">Cycling</div>
+          <div class="workout-meta">280 cal · 45 min</div>
+          <button class="workout-cta" data-workout="cycling">Start →</button>
+        </div>
+        <div class="workout-card yoga" data-workout="yoga">
+          <div class="workout-icon">🧘</div>
+          <div class="workout-name">Yoga</div>
+          <div class="workout-meta">150 cal · 40 min</div>
+          <button class="workout-cta" data-workout="yoga">Start →</button>
+        </div>
+        <div class="workout-card weights" data-workout="weights">
+          <div class="workout-icon">🏋️</div>
+          <div class="workout-name">Weights</div>
+          <div class="workout-meta">400 cal · 50 min</div>
+          <button class="workout-cta" data-workout="weights">Start →</button>
+        </div>
+      </div>
+      <div class="section-title">Recent Activity<span class="see-all" id="btn-view-all-activity">View All →</span></div>
+      <div id="recent-activity-list">
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(0,212,255,0.12);">🏃</div>
+          <div class="panel-info">
+            <div class="panel-title">Morning Run</div>
+            <div class="panel-desc">Today · 5.2 km · 28 min</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-blue);">320 cal</div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(168,85,247,0.12);">🚴</div>
+          <div class="panel-info">
+            <div class="panel-title">Evening Cycle</div>
+            <div class="panel-desc">Yesterday · 12 km · 40 min</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-purple);">280 cal</div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(34,197,94,0.12);">🧘</div>
+          <div class="panel-info">
+            <div class="panel-title">Yoga Session</div>
+            <div class="panel-desc">2 days ago · 35 min</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-green);">150 cal</div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(249,115,22,0.12);">🏋️</div>
+          <div class="panel-info">
+            <div class="panel-title">Weight Training</div>
+            <div class="panel-desc">3 days ago · 55 min</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-orange);">400 cal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STATISTICS SCREEN ==================== -->
+    <div id="screen-stats" class="screen">
+      <div class="header">
+        <div class="header-left">
+          <div class="greeting">
+            <h2>Statistics 📊</h2>
+            <p>Your weekly performance</p>
+          </div>
+        </div>
+      </div>
+      <div class="stats-overview">
+        <div class="stat-mini-card">
+          <div class="mini-value" style="color:var(--neon-blue);"><span class="counter" data-target="52843">0</span>
+          </div>
+          <div class="mini-label">Total Steps</div>
+        </div>
+        <div class="stat-mini-card">
+          <div class="mini-value" style="color:var(--neon-orange);"><span class="counter" data-target="3240">0</span>
+          </div>
+          <div class="mini-label">Calories</div>
+        </div>
+        <div class="stat-mini-card">
+          <div class="mini-value" style="color:var(--neon-green);"><span class="counter" data-target="28">0</span>.<span
+              class="counter" data-target="5">0</span></div>
+          <div class="mini-label">KM Covered</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Weekly Workouts</h3><span class="chart-period">This Week</span>
+        </div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+      <div class="circular-stats">
+        <div class="circular-stat-card">
+          <div class="circular-stat-ring"><svg viewBox="0 0 90 90">
+              <circle class="circular-ring-bg" cx="45" cy="45" r="39" />
+              <circle class="circular-ring-fill" cx="45" cy="45" r="39" stroke="url(#grad-blue)" data-percent="78" />
+            </svg>
+            <div class="ring-center-text" style="color:var(--neon-blue);">78%</div>
+          </div>
+          <div class="circ-label">Steps Goal</div>
+        </div>
+        <div class="circular-stat-card">
+          <div class="circular-stat-ring"><svg viewBox="0 0 90 90">
+              <circle class="circular-ring-bg" cx="45" cy="45" r="39" />
+              <circle class="circular-ring-fill" cx="45" cy="45" r="39" stroke="url(#grad-orange)" data-percent="62" />
+            </svg>
+            <div class="ring-center-text" style="color:var(--neon-orange);">62%</div>
+          </div>
+          <div class="circ-label">Calorie Goal</div>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:8px;">Performance Insights</div>
+      <div class="data-panel">
+        <div class="panel-icon" style="background:rgba(0,212,255,0.12);">⚡</div>
+        <div class="panel-info">
+          <div class="panel-title">Active Minutes</div>
+          <div class="panel-desc">This week's average</div>
+        </div>
+        <div class="panel-value" style="color:var(--neon-blue);">42 min</div>
+      </div>
+      <div class="data-panel">
+        <div class="panel-icon" style="background:rgba(236,72,153,0.12);">❤️</div>
+        <div class="panel-info">
+          <div class="panel-title">Avg Heart Rate</div>
+          <div class="panel-desc">Resting BPM</div>
+        </div>
+        <div class="panel-value" style="color:var(--neon-pink);">72 bpm</div>
+      </div>
+      <div class="data-panel">
+        <div class="panel-icon" style="background:rgba(34,197,94,0.12);">🔥</div>
+        <div class="panel-info">
+          <div class="panel-title">Streak</div>
+          <div class="panel-desc">Consecutive active days</div>
+        </div>
+        <div class="panel-value" style="color:var(--neon-green);">7 days</div>
+      </div>
+      <div class="data-panel">
+        <div class="panel-icon" style="background:rgba(168,85,247,0.12);">🏆</div>
+        <div class="panel-info">
+          <div class="panel-title">Best Workout</div>
+          <div class="panel-desc">Highest calorie burn</div>
+        </div>
+        <div class="panel-value" style="color:var(--neon-purple);">520 cal</div>
+      </div>
+    </div>
+
+    <!-- ==================== PROFILE SCREEN ==================== -->
+    <div id="screen-profile" class="screen">
+      <div class="profile-hero">
+        <div class="profile-pic-large">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=FitUser&backgroundColor=b6e3f4" alt="Profile">
+        </div>
+        <h2>Alex Johnson</h2>
+        <p>Fitness Enthusiast · Level 12</p>
+      </div>
+      <div class="profile-stats-row">
+        <div class="profile-stat">
+          <div class="ps-value">156</div>
+          <div class="ps-label">Workouts</div>
+        </div>
+        <div class="profile-stat">
+          <div class="ps-value">42.5k</div>
+          <div class="ps-label">Calories</div>
+        </div>
+        <div class="profile-stat">
+          <div class="ps-value">284</div>
+          <div class="ps-label">KM Total</div>
+        </div>
+      </div>
+      <div class="section-title">Settings</div>
+      <div class="profile-menu">
+        <div class="menu-item" data-panel="panel-edit-profile"><span class="menu-icon">👤</span><span
+            class="menu-text">Edit Profile</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" data-panel="panel-goals"><span class="menu-icon">🎯</span><span class="menu-text">Goals &
+            Targets</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" data-panel="panel-notifications-settings"><span class="menu-icon">🔔</span><span
+            class="menu-text">Notifications</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" data-panel="panel-devices"><span class="menu-icon">⌚</span><span
+            class="menu-text">Connected Devices</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" data-panel="panel-appearance"><span class="menu-icon">🎨</span><span
+            class="menu-text">Appearance</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" data-panel="panel-privacy"><span class="menu-icon">🔒</span><span
+            class="menu-text">Privacy & Security</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" data-panel="panel-about"><span class="menu-icon">ℹ️</span><span class="menu-text">About
+            FitPulse</span><span class="menu-arrow">›</span></div>
+      </div>
+    </div>
+
+    <!-- ==================== OVERLAY PANELS ==================== -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- NOTIFICATIONS PANEL -->
+    <div class="slide-panel" id="panel-notifications">
+      <div class="panel-header">
+        <button class="panel-back" id="notif-back">← Back</button>
+        <h3>Notifications</h3>
+        <button class="panel-action" id="notif-clear-all">Clear All</button>
+      </div>
+      <div class="panel-body" id="notif-list">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div class="slide-panel" id="panel-settings">
+      <div class="panel-header">
+        <button class="panel-back" id="settings-back">← Back</button>
+        <h3>Settings</h3>
+        <span></span>
+      </div>
+      <div class="panel-body">
+        <div class="settings-group">
+          <div class="settings-group-title">General</div>
+          <div class="setting-row"><span class="setting-label">🌐 Language</span><select class="setting-select"
+              id="set-language">
+              <option>English</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>German</option>
+              <option>Urdu</option>
+              <option>Hindi</option>
+            </select></div>
+          <div class="setting-row"><span class="setting-label">📏 Units</span>
+            <div class="toggle-group"><button class="toggle-opt active" data-group="units">Metric</button><button
+                class="toggle-opt" data-group="units">Imperial</button></div>
+          </div>
+          <div class="setting-row"><span class="setting-label">🌙 Dark Mode</span><label class="switch"><input
+                type="checkbox" id="set-darkmode" checked><span class="slider"></span></label></div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title">Health</div>
+          <div class="setting-row"><span class="setting-label">🎯 Daily Step Goal</span><input type="number"
+              class="setting-input" id="set-steps" value="10000" min="1000" max="50000" step="500"></div>
+          <div class="setting-row"><span class="setting-label">🔥 Calorie Target</span><input type="number"
+              class="setting-input" id="set-calories" value="600" min="100" max="5000" step="50"></div>
+          <div class="setting-row"><span class="setting-label">📍 Distance Goal (km)</span><input type="number"
+              class="setting-input" id="set-distance" value="6" min="1" max="50" step="0.5"></div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title">Notifications</div>
+          <div class="setting-row"><span class="setting-label">🔔 Push Notifications</span><label class="switch"><input
+                type="checkbox" id="set-push" checked><span class="slider"></span></label></div>
+          <div class="setting-row"><span class="setting-label">📧 Email Reports</span><label class="switch"><input
+                type="checkbox" id="set-email"><span class="slider"></span></label></div>
+          <div class="setting-row"><span class="setting-label">⏰ Reminders</span><label class="switch"><input
+                type="checkbox" id="set-reminders" checked><span class="slider"></span></label></div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title">Account</div>
+          <div class="setting-row clickable" id="set-export"><span class="setting-label">📤 Export Data</span><span
+              class="menu-arrow">›</span></div>
+          <div class="setting-row clickable" id="set-reset"><span class="setting-label">🗑️ Reset All Data</span><span
+              class="menu-arrow">›</span></div>
+          <div class="setting-row clickable" id="set-logout"><span class="setting-label">🚪 Log Out</span><span
+              class="menu-arrow">›</span></div>
+        </div>
+        <button class="primary-btn" id="settings-save">💾 Save Settings</button>
+      </div>
+    </div>
+
+    <!-- WORKOUT TIMER PANEL -->
+    <div class="slide-panel" id="panel-workout-timer">
+      <div class="panel-header">
+        <button class="panel-back" id="timer-back">← Back</button>
+        <h3 id="timer-title">Running</h3>
+        <span></span>
+      </div>
+      <div class="panel-body workout-timer-body">
+        <div class="timer-icon-large" id="timer-icon">🏃</div>
+        <div class="timer-display" id="timer-display">00:00</div>
+        <div class="timer-stats-row">
+          <div class="timer-stat">
+            <div class="ts-value" id="timer-cal">0</div>
+            <div class="ts-label">Calories</div>
+          </div>
+          <div class="timer-stat">
+            <div class="ts-value" id="timer-dist">0.0</div>
+            <div class="ts-label">KM</div>
+          </div>
+          <div class="timer-stat">
+            <div class="ts-value" id="timer-bpm">72</div>
+            <div class="ts-label">BPM</div>
+          </div>
+        </div>
+        <div class="timer-controls">
+          <button class="timer-btn pause" id="timer-pause">⏸️ Pause</button>
+          <button class="timer-btn start" id="timer-start">▶️ Start</button>
+          <button class="timer-btn stop" id="timer-stop">⏹️ Stop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT PROFILE PANEL -->
+    <div class="slide-panel" id="panel-edit-profile">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>Edit Profile</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="form-group"><label>Full Name</label><input type="text" class="setting-input" value="Alex Johnson">
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" class="setting-input" value="alex@fitpulse.com">
+        </div>
+        <div class="form-group"><label>Age</label><input type="number" class="setting-input" value="28"></div>
+        <div class="form-group"><label>Weight (kg)</label><input type="number" class="setting-input" value="72"
+            step="0.1"></div>
+        <div class="form-group"><label>Height (cm)</label><input type="number" class="setting-input" value="175"></div>
+        <div class="form-group"><label>Gender</label><select class="setting-select">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Non-binary</option>
+            <option>Prefer not to say</option>
+          </select></div>
+        <button class="primary-btn sub-save">💾 Save Profile</button>
+      </div>
+    </div>
+
+    <!-- GOALS PANEL -->
+    <div class="slide-panel" id="panel-goals">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>Goals & Targets</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="form-group"><label>Daily Steps</label><input type="range" class="setting-range" min="1000"
+            max="30000" value="10000" step="500" id="range-steps">
+          <div class="range-value" id="range-steps-val">10,000 steps</div>
+        </div>
+        <div class="form-group"><label>Calorie Burn</label><input type="range" class="setting-range" min="100"
+            max="3000" value="600" step="50" id="range-cal">
+          <div class="range-value" id="range-cal-val">600 cal</div>
+        </div>
+        <div class="form-group"><label>Distance (km)</label><input type="range" class="setting-range" min="1" max="50"
+            value="6" step="0.5" id="range-dist">
+          <div class="range-value" id="range-dist-val">6.0 km</div>
+        </div>
+        <div class="form-group"><label>Workout Duration (min)</label><input type="range" class="setting-range" min="10"
+            max="120" value="60" step="5" id="range-time">
+          <div class="range-value" id="range-time-val">60 min</div>
+        </div>
+        <div class="form-group"><label>Water Intake (glasses)</label><input type="range" class="setting-range" min="1"
+            max="20" value="8" step="1" id="range-water">
+          <div class="range-value" id="range-water-val">8 glasses</div>
+        </div>
+        <button class="primary-btn sub-save">🎯 Save Goals</button>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS SETTINGS PANEL -->
+    <div class="slide-panel" id="panel-notifications-settings">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>Notification Preferences</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="setting-row"><span class="setting-label">🔔 Push Notifications</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">🏃 Workout Reminders</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">🎯 Goal Alerts</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">❤️ Heart Rate Warnings</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">💧 Hydration Reminders</span><label class="switch"><input
+              type="checkbox"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">📊 Weekly Reports</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">🏆 Achievement Badges</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">🌙 Do Not Disturb</span><label class="switch"><input
+              type="checkbox"><span class="slider"></span></label></div>
+        <button class="primary-btn sub-save">💾 Save Preferences</button>
+      </div>
+    </div>
+
+    <!-- CONNECTED DEVICES PANEL -->
+    <div class="slide-panel" id="panel-devices">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>Connected Devices</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="device-card connected">
+          <div class="device-icon">⌚</div>
+          <div class="device-info">
+            <div class="device-name">Apple Watch Series 9</div>
+            <div class="device-status">Connected · Battery 78%</div>
+          </div><button class="device-btn disconnect">Disconnect</button>
+        </div>
+        <div class="device-card connected">
+          <div class="device-icon">📱</div>
+          <div class="device-info">
+            <div class="device-name">iPhone 15 Pro</div>
+            <div class="device-status">Connected · Synced 2 min ago</div>
+          </div><button class="device-btn disconnect">Disconnect</button>
+        </div>
+        <div class="device-card">
+          <div class="device-icon">🎧</div>
+          <div class="device-info">
+            <div class="device-name">AirPods Pro</div>
+            <div class="device-status">Available</div>
+          </div><button class="device-btn connect">Connect</button>
+        </div>
+        <div class="device-card">
+          <div class="device-icon">🩺</div>
+          <div class="device-info">
+            <div class="device-name">Withings Scale</div>
+            <div class="device-status">Not paired</div>
+          </div><button class="device-btn connect">Pair</button>
+        </div>
+        <button class="primary-btn" style="margin-top:20px;">🔍 Scan for Devices</button>
+      </div>
+    </div>
+
+    <!-- APPEARANCE PANEL -->
+    <div class="slide-panel" id="panel-appearance">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>Appearance</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="settings-group-title">Theme</div>
+        <div class="theme-grid">
+          <div class="theme-card active" data-theme="dark">
+            <div class="theme-preview dark-preview"></div><span>Dark</span>
+          </div>
+          <div class="theme-card" data-theme="midnight">
+            <div class="theme-preview midnight-preview"></div><span>Midnight</span>
+          </div>
+          <div class="theme-card" data-theme="amoled">
+            <div class="theme-preview amoled-preview"></div><span>AMOLED</span>
+          </div>
+        </div>
+        <div class="settings-group-title" style="margin-top:20px;">Accent Color</div>
+        <div class="color-picker-row">
+          <div class="color-dot active" style="background:var(--neon-blue);" data-color="blue"></div>
+          <div class="color-dot" style="background:var(--neon-purple);" data-color="purple"></div>
+          <div class="color-dot" style="background:var(--neon-pink);" data-color="pink"></div>
+          <div class="color-dot" style="background:var(--neon-green);" data-color="green"></div>
+          <div class="color-dot" style="background:var(--neon-orange);" data-color="orange"></div>
+          <div class="color-dot" style="background:var(--neon-yellow);" data-color="yellow"></div>
+        </div>
+        <div class="form-group" style="margin-top:20px;"><label>Font Size</label><input type="range"
+            class="setting-range" min="12" max="20" value="16" step="1" id="range-font">
+          <div class="range-value" id="range-font-val">16px</div>
+        </div>
+        <button class="primary-btn sub-save">🎨 Apply</button>
+      </div>
+    </div>
+
+    <!-- PRIVACY PANEL -->
+    <div class="slide-panel" id="panel-privacy">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>Privacy & Security</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="setting-row"><span class="setting-label">🔒 App Lock (PIN)</span><label class="switch"><input
+              type="checkbox"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">👆 Biometric Login</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">📍 Location Tracking</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">📊 Analytics Sharing</span><label class="switch"><input
+              type="checkbox"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">☁️ Cloud Backup</span><label class="switch"><input
+              type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="setting-row clickable"><span class="setting-label">🔑 Change Password</span><span
+            class="menu-arrow">›</span></div>
+        <div class="setting-row clickable"><span class="setting-label">🗑️ Delete Account</span><span class="menu-arrow"
+            style="color:var(--neon-pink);">›</span></div>
+        <button class="primary-btn sub-save">🔒 Save</button>
+      </div>
+    </div>
+
+    <!-- ABOUT PANEL -->
+    <div class="slide-panel" id="panel-about">
+      <div class="panel-header"><button class="panel-back sub-back">← Back</button>
+        <h3>About FitPulse</h3><span></span>
+      </div>
+      <div class="panel-body about-body">
+        <div class="about-logo">💪</div>
+        <h2 class="about-title">FitPulse</h2>
+        <p class="about-version">Version 3.2.1 (Build 2026.03)</p>
+        <div class="about-desc">A premium 3D fitness tracking app with real-time health metrics, workout tracking, and
+          beautiful visualizations.</div>
+        <div class="about-links">
+          <div class="setting-row clickable"><span class="setting-label">📄 Terms of Service</span><span
+              class="menu-arrow">›</span></div>
+          <div class="setting-row clickable"><span class="setting-label">🔐 Privacy Policy</span><span
+              class="menu-arrow">›</span></div>
+          <div class="setting-row clickable"><span class="setting-label">⭐ Rate this App</span><span
+              class="menu-arrow">›</span></div>
+          <div class="setting-row clickable"><span class="setting-label">💬 Send Feedback</span><span
+              class="menu-arrow">›</span></div>
+          <div class="setting-row clickable"><span class="setting-label">🐛 Report a Bug</span><span
+              class="menu-arrow">›</span></div>
+        </div>
+        <p class="about-copy">© 2026 FitPulse Inc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <!-- ACTIVITY DETAILS PANEL -->
+    <div class="slide-panel" id="panel-activity-details">
+      <div class="panel-header"><button class="panel-back" id="activity-details-back">← Back</button>
+        <h3>Activity Details</h3><span></span>
+      </div>
+      <div class="panel-body">
+        <div class="detail-ring-row">
+          <div class="detail-ring">
+            <div class="circular-stat-ring"><svg viewBox="0 0 90 90">
+                <circle class="circular-ring-bg" cx="45" cy="45" r="39" />
+                <circle class="circular-ring-fill detail-fill" cx="45" cy="45" r="39" stroke="url(#ring-grad-move)"
+                  data-percent="82" />
+              </svg>
+              <div class="ring-center-text" style="color:var(--neon-pink);">82%</div>
+            </div>
+            <div class="circ-label">Move</div>
+            <div class="circ-sub">487 / 600 cal</div>
+          </div>
+          <div class="detail-ring">
+            <div class="circular-stat-ring"><svg viewBox="0 0 90 90">
+                <circle class="circular-ring-bg" cx="45" cy="45" r="39" />
+                <circle class="circular-ring-fill detail-fill" cx="45" cy="45" r="39" stroke="url(#ring-grad-exercise)"
+                  data-percent="65" />
+              </svg>
+              <div class="ring-center-text" style="color:var(--neon-green);">65%</div>
+            </div>
+            <div class="circ-label">Exercise</div>
+            <div class="circ-sub">39 / 60 min</div>
+          </div>
+          <div class="detail-ring">
+            <div class="circular-stat-ring"><svg viewBox="0 0 90 90">
+                <circle class="circular-ring-bg" cx="45" cy="45" r="39" />
+                <circle class="circular-ring-fill detail-fill" cx="45" cy="45" r="39" stroke="url(#ring-grad-stand)"
+                  data-percent="90" />
+              </svg>
+              <div class="ring-center-text" style="color:var(--neon-blue);">90%</div>
+            </div>
+            <div class="circ-label">Stand</div>
+            <div class="circ-sub">9 / 10 hrs</div>
+          </div>
+        </div>
+        <div class="section-title" style="margin-top:20px;">Today's Breakdown</div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(236,72,153,0.12);">🔥</div>
+          <div class="panel-info">
+            <div class="panel-title">Active Calories</div>
+            <div class="panel-desc">Burned through exercise</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-pink);">487 cal</div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(0,212,255,0.12);">🚶</div>
+          <div class="panel-info">
+            <div class="panel-title">Steps</div>
+            <div class="panel-desc">8,432 of 10,000</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-blue);">84%</div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(34,197,94,0.12);">⏱️</div>
+          <div class="panel-info">
+            <div class="panel-title">Exercise Time</div>
+            <div class="panel-desc">39 minutes today</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-green);">65%</div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-icon" style="background:rgba(168,85,247,0.12);">📏</div>
+          <div class="panel-info">
+            <div class="panel-title">Distance</div>
+            <div class="panel-desc">4.2 km walked & run</div>
+          </div>
+          <div class="panel-value" style="color:var(--neon-purple);">4.2 km</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT DETAIL MODAL -->
+    <div class="slide-panel" id="panel-stat-detail">
+      <div class="panel-header"><button class="panel-back" id="stat-detail-back">← Back</button>
+        <h3 id="stat-detail-title">Steps</h3><span></span>
+      </div>
+      <div class="panel-body" id="stat-detail-body">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ==================== NAVIGATION BAR ==================== -->
+    <nav class="nav-bar">
+      <div class="nav-bar-inner">
+        <button class="nav-item active" data-screen="screen-home" id="nav-home"><span class="nav-icon">🏠</span><span
+            class="nav-label">Home</span></button>
+        <button class="nav-item" data-screen="screen-workouts" id="nav-workouts"><span class="nav-icon">💪</span><span
+            class="nav-label">Workouts</span></button>
+        <button class="nav-item" data-screen="screen-stats" id="nav-stats"><span class="nav-icon">📊</span><span
+            class="nav-label">Stats</span></button>
+        <button class="nav-item" data-screen="screen-profile" id="nav-profile"><span class="nav-icon">👤</span><span
+            class="nav-label">Profile</span></button>
+      </div>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
